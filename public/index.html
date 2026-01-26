@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEL HEALTH AI – Pharmacy Management</title>
+
+<style>
+:root {
+  --primary: #16a085;
+  --primary-dark: #12876f;
+  --bg-light: #f8fdfc;
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --card-bg: #ffffff;
+  --radius: 14px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: var(--text-dark);
+}
+
+/* ===== HEADER ===== */
+header {
+  padding: 20px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 20px;
+}
+
+.logo span {
+  width: 36px;
+  height: 36px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+nav a {
+  text-decoration: none;
+  margin-left: 20px;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+/* ===== HERO ===== */
+.hero {
+  padding: 70px 8%;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  background: #e8f7f3;
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 44px;
+  margin-bottom: 15px;
+}
+
+.hero h1 span {
+  color: var(--primary);
+}
+
+.hero p {
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-outline {
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ===== STATS ===== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+  padding: 40px 8%;
+}
+
+.stat-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.stat-card h2 {
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.stat-card p {
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+/* ===== FEATURES ===== */
+.section {
+  padding: 70px 8%;
+  background: var(--bg-light);
+}
+
+.section h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.section p {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 25px;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.feature-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.feature-card h4 {
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  text-align: left;
+  font-size: 14px;
+}
+
+/* ===== CTA ===== */
+.cta {
+  padding: 70px 8%;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, #16a085, #0f766e);
+  color: #fff;
+  padding: 60px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.cta-box h2 {
+  margin-bottom: 10px;
+}
+
+.cta-box p {
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.cta-box button {
+  background: #fff;
+  color: var(--primary);
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 30px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+@media(max-width:768px) {
+  .hero h1 { font-size: 34px; }
+  header { flex-direction: column; gap: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <span>❤</span> VEL HEALTH
+  </div>
+  <nav>
+    <a href="auth.html">Login</a>
+    <button class="btn-primary">Get Started →</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="badge">⚡ AI-Powered Pharmacy Management</div>
+  <h1>Transform Your Pharmacy with <span>VEL HEALTH AI</span></h1>
+  <p>
+    Complete pharmacy management solution with smart billing, customer credits,
+    medicine tracking, and nearby pharmacy search. Built for modern pharmacies.
+  </p>
+
+  <div class="hero-buttons">
+    <button class="btn-primary">Register as Pharmacy →</button>
+    <button class="btn-outline">Join as Customer</button>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat-card">
+    <h2>10K+</h2>
+    <p>Active Pharmacies</p>
+  </div>
+  <div class="stat-card">
+    <h2>50K+</h2>
+    <p>Customers</p>
+  </div>
+  <div class="stat-card">
+    <h2>1M+</h2>
+    <p>Transactions</p>
+  </div>
+  <div class="stat-card">
+    <h2>99.9%</h2>
+    <p>Uptime</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Everything You Need to Run Your Pharmacy</h2>
+  <p>Powerful features designed specifically for pharmacy management</p>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">💊</div>
+      <h4>Medicine Management</h4>
+      <p>Track inventory, expiry dates, and stock levels with intelligent alerts.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💳</div>
+      <h4>Smart Billing</h4>
+      <p>Fast billing with discounts, credits system, and multiple payment options.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">👤</div>
+      <h4>Customer Credits</h4>
+      <p>Reward loyal customers with credits redeemable on purchases.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📍</div>
+      <h4>Nearby Pharmacy Search</h4>
+      <p>Find medicines at nearby pharmacies when out of stock.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🧾</div>
+      <h4>Invoice History</h4>
+      <p>Complete billing history with export functionality.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h4>Secure & Encrypted</h4>
+      <p>All data encrypted and securely stored with compliance standards.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-box">
+    <h2>Ready to Transform Your Pharmacy?</h2>
+    <p>Join thousands of pharmacies already using VEL HEALTH AI.</p>
+    <button>Start Free Today →</button>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">
+    <span>❤</span> VEL HEALTH
+  </div>
+  <p>© 2024 VEL HEALTH AI. All rights reserved.</p>
+</footer>
+
+<script>
+// Future JS hooks (login, register routing, animations)
+</script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+medicine_name,drug_name,category,stock_level,price_per_sheet,expiry_date,notes
+Paracetamol 500mg,Paracetamol,Tablets,100,25.5,31-12-2025,Keep refrigerated
+Dolo 650,Paracetamol 650mg,Tablets,250,31.2,30-06-2026,Antipyretic and analgesic
+Calpol 500,Paracetamol 500mg,Tablets,180,13.8,15-03-2026,For fever and pain relief
+Crocin Advance 500,Paracetamol 500mg,Tablets,200,18.9,20-11-2025,Fast relief from pain
+Azithral 500,Azithromycin 500mg,Tablets,120,125.89,25-01-2026,Antibiotic for bacterial infections
+Azee 500,Azithromycin 500mg,Tablets,150,125.89,18-09-2025,Take on empty stomach
+Augmentin 625,Amoxicillin 500mg + Clavulanic Acid 125mg,Tablets,90,195.3,28-02-2026,Broad spectrum antibiotic
+Amoxyclav 625,Amoxicillin 500mg + Clavulanic Acid 125mg,Tablets,110,195.4,12-10-2025,Store in cool place
+Mox 500,Amoxicillin 500mg,Capsules,160,123.48,22-04-2026,Penicillin antibiotic
+Cipmox 500,Amoxicillin 500mg,Capsules,140,110.2,08-12-2025,For respiratory infections
+Allegra 120,Fexofenadine 120mg,Tablets,175,272.99,10-05-2026,Antihistamine for allergies
+Atarax 25,Hydroxyzine 25mg,Tablets,95,106.41,30-08-2025,For anxiety and itching
+Aciloc 150,Ranitidine 150mg,Tablets,200,50.44,15-01-2026,Antacid for gastric issues
+Pantoprazole 40mg,Pantoprazole,Tablets,220,85,20-03-2026,Proton pump inhibitor
+Omeprazole 20mg,Omeprazole,Capsules,190,45.5,25-11-2025,For acid reflux
+Metronidazole 400,Metronidazole,Tablets,130,35,10-02-2026,Antiprotozoal antibiotic
+Norfloxacin 400,Norfloxacin,Tablets,85,78,28-09-2025,For urinary tract infections
+Ciprofloxacin 500,Ciprofloxacin,Tablets,145,95,18-04-2026,Broad spectrum antibiotic
+Cefixime 200,Cefixime,Tablets,100,165,22-12-2025,Third generation cephalosporin
+Levofloxacin 500,Levofloxacin,Tablets,75,180,30-01-2026,Fluoroquinolone antibiotic
+Doxycycline 100,Doxycycline,Capsules,120,65,15-10-2025,Tetracycline antibiotic
+Cetirizine 10mg,Cetirizine,Tablets,300,12.5,15-06-2026,Antihistamine for allergies
+Levocetirizine 5mg,Levocetirizine,Tablets,250,18,20-05-2026,For allergic rhinitis
+Montelukast 10mg,Montelukast,Tablets,140,95,10-11-2025,For asthma prevention
+Salbutamol Inhaler,Salbutamol,Inhaler,60,125,25-03-2026,Bronchodilator for asthma
+Budesonide Inhaler,Budesonide,Inhaler,50,385,30-12-2025,Corticosteroid for asthma
+Amlodipine 5mg,Amlodipine,Tablets,200,45,12-04-2026,Calcium channel blocker
+Telmisartan 40mg,Telmisartan,Tablets,180,85,18-02-2026,ARB for hypertension
+Losartan 50mg,Losartan,Tablets,160,65,28-11-2025,For high blood pressure
+Atenolol 50mg,Atenolol,Tablets,150,38,22-01-2026,Beta blocker for BP
+Metoprolol 25mg,Metoprolol,Tablets,130,52,08-10-2025,For heart conditions
+Enalapril 5mg,Enalapril,Tablets,110,48,14-03-2026,ACE inhibitor
+Ramipril 5mg,Ramipril,Tablets,95,72,05-12-2025,For hypertension
+Hydrochlorothiazide 12.5mg,Hydrochlorothiazide,Tablets,170,25,08-05-2026,Diuretic for BP
+Furosemide 40mg,Furosemide,Tablets,140,18,20-09-2025,Loop diuretic
+Spironolactone 25mg,Spironolactone,Tablets,85,42,25-02-2026,Potassium sparing diuretic
+Atorvastatin 10mg,Atorvastatin,Tablets,220,55,30-04-2026,Statin for cholesterol
+Rosuvastatin 10mg,Rosuvastatin,Tablets,190,95,18-11-2025,For high cholesterol
+Clopidogrel 75mg,Clopidogrel,Tablets,100,90.35,12-01-2026,Antiplatelet agent
+Aspirin 75mg,Aspirin,Tablets,280,8,20-06-2026,Blood thinner
+Warfarin 5mg,Warfarin,Tablets,70,65,25-10-2025,Anticoagulant
+Metformin 500mg SR,Metformin,Tablets,250,35,28-03-2026,For diabetes type 2
+Metformin 1000mg SR,Metformin,Tablets,200,62,16-12-2025,Antidiabetic drug
+Glimepiride 1mg,Glimepiride,Tablets,160,38,22-02-2026,Sulfonylurea for diabetes
+Glimepiride 2mg,Glimepiride,Tablets,140,52,30-11-2025,Stimulates insulin release
+Voglibose 0.3mg,Voglibose,Tablets,120,35,15-04-2026,Alpha glucosidase inhibitor
+Sitagliptin 50mg,Sitagliptin,Tablets,95,138,12-09-2025,DPP-4 inhibitor
+Vildagliptin 50mg,Vildagliptin,Tablets,85,145,28-01-2026,For type 2 diabetes
+Dapagliflozin 10mg,Dapagliflozin,Tablets,75,205,10-12-2025,SGLT2 inhibitor
+Teneligliptin 20mg,Teneligliptin,Tablets,110,125,18-03-2026,DPP-4 inhibitor
+Insulin Glargine,Insulin Glargine,Injection,40,850,15-05-2026,Long acting insulin
+Levothyroxine 50mcg,Levothyroxine,Tablets,200,42,28-02-2026,For hypothyroidism
+Levothyroxine 100mcg,Levothyroxine,Tablets,180,58,22-11-2025,Thyroid hormone
+Ibuprofen 400mg,Ibuprofen,Tablets,220,13.4,25-04-2026,NSAID for pain
+Diclofenac 50mg,Diclofenac,Tablets,190,28,18-10-2025,For pain and inflammation
+Aceclofenac 100mg,Aceclofenac,Tablets,160,45,14-02-2026,NSAID analgesic
+Nimesulide 100mg,Nimesulide,Tablets,140,32,08-12-2025,For acute pain
+Tramadol 50mg,Tramadol,Tablets,80,55,20-01-2026,Opioid analgesic
+Ketorolac 10mg,Ketorolac,Tablets,95,48,25-09-2025,For moderate pain
+Naproxen 500mg,Naproxen,Tablets,120,65,30-03-2026,NSAID for arthritis
+Serratiopeptidase 10mg,Serratiopeptidase,Tablets,150,38,15-11-2025,Anti-inflammatory enzyme
+Diazepam 5mg,Diazepam,Tablets,60,35,10-02-2026,Anxiolytic benzodiazepine
+Alprazolam 0.5mg,Alprazolam,Tablets,75,42,28-10-2025,For anxiety disorders
+Lorazepam 1mg,Lorazepam,Tablets,55,90.35,15-01-2026,Short term anxiety relief
+Escitalopram 10mg,Escitalopram,Tablets,110,85,20-12-2025,SSRI antidepressant
+Sertraline 50mg,Sertraline,Tablets,95,95,05-04-2026,For depression and OCD
+Fluoxetine 20mg,Fluoxetine,Tablets,85,65,08-11-2025,SSRI for depression
+Amitriptyline 25mg,Amitriptyline,Tablets,70,42,18-02-2026,Tricyclic antidepressant
+Clonazepam 0.5mg,Clonazepam,Tablets,90,38,30-09-2025,For seizures and anxiety
+Phenytoin 100mg,Phenytoin,Tablets,100,28,12-03-2026,Antiepileptic drug
+Carbamazepine 200mg,Carbamazepine,Tablets,85,45,25-12-2025,For epilepsy and neuralgia
+Valproic Acid 500mg,Valproic Acid,Tablets,75,125,30-01-2026,Mood stabilizer
+Gabapentin 300mg,Gabapentin,Capsules,110,95,20-10-2025,For neuropathic pain
+Pregabalin 75mg,Pregabalin,Capsules,95,145,22-04-2026,For nerve pain
+Ondansetron 4mg,Ondansetron,Tablets,150,35,12-11-2025,Antiemetic for nausea
+Domperidone 10mg,Domperidone,Tablets,180,25,28-02-2026,For gastric motility
+Ranitidine 150mg,Ranitidine,Tablets,200,48,18-12-2025,H2 blocker
+Esomeprazole 40mg,Esomeprazole,Capsules,160,115,25-03-2026,PPI for GERD
+Sucralfate 1gm,Sucralfate,Tablets,120,65,15-09-2025,Gastric protectant
+Bisacodyl 5mg,Bisacodyl,Tablets,140,22,28-01-2026,Laxative
+Lactulose Syrup,Lactulose,Syrup,90,85,30-11-2025,For constipation
+Loperamide 2mg,Loperamide,Tablets,110,28,10-04-2026,Anti-diarrheal
+Mebendazole 100mg,Mebendazole,Tablets,130,35,22-10-2025,Anthelmintic
+Albendazole 400mg,Albendazole,Tablets,150,18,15-02-2026,For parasitic worms
+Vitamin D3 60000 IU,Cholecalciferol,Capsules,180,45,28-12-2025,For vitamin D deficiency
+Calcium Carbonate 500mg,Calcium Carbonate,Tablets,220,32,18-05-2026,Calcium supplement
+Vitamin B Complex,B Vitamins,Tablets,200,25,25-01-2026,Multivitamin supplement
+Folic Acid 5mg,Folic Acid,Tablets,240,12,20-11-2025,For anemia prevention
+Iron + Folic Acid,Ferrous Sulfate + Folic Acid,Tablets,190,28,30-03-2026,For iron deficiency
+Vitamin C 500mg,Ascorbic Acid,Tablets,210,22,12-10-2025,Antioxidant supplement
+Multivitamin Syrup,Mixed Vitamins,Syrup,120,95,20-02-2026,For overall health
+Zinc Sulfate 20mg,Zinc Sulfate,Tablets,160,18,15-12-2025,Immune support
+Prednisolone 5mg,Prednisolone,Tablets,100,35,08-04-2026,Corticosteroid
+Dexamethasone 0.5mg,Dexamethasone,Tablets,85,28,28-09-2025,Anti-inflammatory steroid
+Hydrocortisone Cream,Hydrocortisone,Cream,140,65,18-01-2026,Topical steroid
+Betamethasone Cream,Betamethasone,Cream,110,85,25-11-2025,For skin inflammation
+Clotrimazole Cream,Clotrimazole,Cream,150,45,15-03-2026,Antifungal topical
+Fluconazole 150mg,Fluconazole,Tablets,95,95,30-10-2025,For fungal infections
+Terbinafine 250mg,Terbinafine,Tablets,75,185,25-02-2026,Antifungal oral
+Acyclovir 400mg,Acyclovir,Tablets,90,125,12-12-2025,Antiviral for herpes
+Paracetamol + Ibuprofen,Paracetamol 325mg + Ibuprofen 400mg,Tablets,170,48,20-04-2026,Combination analgesic
+Combiflam,Paracetamol 325mg + Ibuprofen 400mg,Tablets,190,55,18-11-2025,For pain and fever
+Saridon,Paracetamol + Propyphenazone + Caffeine,Tablets,180,47.5,22-01-2026,For headache relief
+Disprin,Aspirin 325mg,Tablets,200,6.3,20-09-2025,Effervescent painkiller
+Chlorpheniramine 4mg,Chlorpheniramine,Tablets,160,15,28-03-2026,Antihistamine
+Phenylephrine 10mg,Phenylephrine,Tablets,130,28,10-12-2025,Decongestant
+Guaifenesin Syrup,Guaifenesin,Syrup,100,95,18-02-2026,Expectorant for cough
+Dextromethorphan Syrup,Dextromethorphan,Syrup,85,88,25-10-2025,Cough suppressant
+Ambroxol 30mg,Ambroxol,Tablets,140,32,12-04-2026,Mucolytic agent
+Bromhexine 8mg,Bromhexine,Tablets,120,25,28-11-2025,For respiratory congestion

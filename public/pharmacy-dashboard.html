@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VEL HEALTH | Pharmacy Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Segoe UI;background:#f7faf9}
+.header{
+  padding:18px 8%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+}
+.logo{font-weight:700;color:#16a085}
+.actions button{
+  margin-left:10px;
+  padding:10px 16px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  background:#fff;
+  cursor:pointer;
+}
+.actions .primary{
+  background:#16a085;
+  color:#fff;
+  border:none;
+}
+
+.cards{
+  margin:25px 8%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+.card h1{margin:0}
+
+.table-box{
+  margin:30px 8%;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+  overflow:hidden;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:14px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+}
+th{background:#f9fafb}
+.badge{
+  background:#f1f5f4;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+.expiring{color:#ef4444;font-weight:600}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    💚 VEL HEALTH<br>
+    <small id="pharmacyInfo"></small>
+  </div>
+<div class="actions">
+  <button onclick="location.href='/add-medicine.html'">➕ Add Medicine</button>
+  <button class="primary" onclick="location.href='/billing.html'">🛒 Billing</button>
+  <button onclick="location.href='/invoice-history.html'">⏱ History</button>
+  <button onclick="location.href='/logout'">⎋</button>
+</div>
+
+</div>
+
+<!-- STATS -->
+<div class="cards">
+  <div class="card">
+    <small>Total Medicines</small>
+    <h1 id="total">0</h1>
+  </div>
+  <div class="card">
+    <small>Out of Stock</small>
+    <h1 id="out">0</h1>
+  </div>
+  <div class="card">
+    <small>Low Stock</small>
+    <h1 id="low">0</h1>
+  </div>
+  <div class="card">
+    <small>Expiring Soon</small>
+    <h1 id="expiring">0</h1>
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-box">
+  <table>
+    <thead>
+      <tr>
+        <th>Medicine</th>
+        <th>Drug Name</th>
+        <th>Category</th>
+        <th>Stock</th>
+        <th>Price</th>
+        <th>Expiry</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<script>
+fetch("/pharmacy/dashboard")
+.then(r=>r.json())
+.then(d=>{
+  if(!d.success){
+    location.href="/auth.html";
+    return;
+  }
+
+  pharmacyInfo.innerText =
+    d.pharmacy.pharmacy_name + " · " + d.pharmacy.location;
+
+  total.innerText = d.stats.total;
+  out.innerText = d.stats.outOfStock;
+  low.innerText = d.stats.lowStock;
+  expiring.innerText = d.stats.expiringSoon;
+
+  rows.innerHTML = d.medicines.length
+    ? d.medicines.map(m=>`
+      <tr>
+        <td>${m.medicine_name}</td>
+        <td>${m.drug_name}</td>
+        <td><span class="badge">${m.category}</span></td>
+        <td>${m.stock}</td>
+        <td>₹${m.price}</td>
+        <td class="${new Date(m.expiry) < new Date() ? 'expiring':''}">
+          ${new Date(m.expiry).toLocaleDateString()}
+        </td>
+      </tr>
+    `).join("")
+    : `<tr><td colspan="6">No medicines added</td></tr>`;
+});
+</script>
+
+</body>
+</html>

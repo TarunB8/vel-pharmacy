@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VEL HEALTH | Credits History</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI, sans-serif;
+  background:#f7faf9;
+}
+
+.header{
+  padding:20px 8%;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.header h3{margin:0}
+
+.balance-card{
+  margin:0 8%;
+  background:linear-gradient(135deg,#16a085,#0f766e);
+  color:#fff;
+  padding:30px;
+  border-radius:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.balance-card h1{margin:0}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  margin:25px 8%;
+}
+.stat{
+  background:#fff;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.section{
+  margin:20px 8%;
+  background:#fff;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.tx{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+}
+.tx:last-child{border:none}
+
+.tx small{color:#6b7280}
+.positive{color:#16a085;font-weight:600}
+.negative{color:#ef4444;font-weight:600}
+
+.info{
+  margin:20px 8%;
+  background:#f0fdfa;
+  padding:20px;
+  border-radius:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="/customer-dashboard.html">←</a>
+  <h3>VEL HEALTH · Credits History</h3>
+</div>
+
+<!-- BALANCE -->
+<div class="balance-card">
+  <div>
+    <small>Current Balance</small>
+    <h1 id="balance">₹0</h1>
+  </div>
+  🎁
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <small>Total Earned</small>
+    <h2 id="earned">₹0</h2>
+  </div>
+  <div class="stat">
+    <small>Total Used</small>
+    <h2 id="used">₹0</h2>
+  </div>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="section">
+  <h3>Transaction History</h3>
+  <div id="transactions"></div>
+</div>
+
+<!-- INFO -->
+<div class="info">
+  <h4>How Credits Work</h4>
+  <ul>
+    <li>1 Credit = ₹1</li>
+    <li>Earn 1% cashback on every purchase</li>
+    <li>Use credits for full or partial payment</li>
+    <li>Credits never expire</li>
+  </ul>
+</div>
+
+<script>
+fetch("/customer/credits-history")
+  .then(r => r.json())
+  .then(d => {
+    if(!d.success){
+      location.href = "/auth.html";
+      return;
+    }
+
+    balance.innerText = "₹" + d.balance;
+    earned.innerText = "₹" + d.earned;
+    used.innerText = "₹" + d.used;
+
+    transactions.innerHTML = d.history.length
+      ? d.history.map(h => `
+        <div class="tx">
+          <div>
+            <strong>${h.description}</strong><br>
+            <small>${new Date(h.created_at).toLocaleString()}</small>
+          </div>
+          <div class="${h.credit_change > 0 ? 'positive' : 'negative'}">
+            ${h.credit_change > 0 ? '+' : ''}₹${Math.abs(h.credit_change)}
+          </div>
+        </div>
+      `).join("")
+      : "<p>No transactions yet</p>";
+  });
+</script>
+
+</body>
+</html>

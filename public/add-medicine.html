@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VEL HEALTH | Add Medicine</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Segoe UI;background:#f7faf9}
+.header{padding:18px 8%;background:#fff}
+.container{
+  margin:30px 8%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+.box{
+  background:#fff;
+  padding:25px;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin-bottom:14px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+}
+button{
+  width:100%;
+  padding:14px;
+  background:#16a085;
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
+.upload{
+  border:2px dashed #cbd5e1;
+  padding:40px;
+  text-align:center;
+  border-radius:14px;
+}
+small{color:#6b7280}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <a href="/pharmacy-dashboard.html">←</a> <b>Add Medicine</b>
+</div>
+
+<div class="container">
+
+  <!-- MANUAL ADD -->
+  <div class="box">
+    <h3>+ Add Manually</h3>
+
+    <input id="medicineName" placeholder="Medicine Name" required>
+    <input id="drugName" placeholder="Drug Name">
+    <select id="category">
+      <option value="Tablets">Tablets</option>
+      <option value="Capsules">Capsules</option>
+      <option value="Syrup">Syrup</option>
+      <option value="Injection">Injection</option>
+      <option value="Cream">Cream</option>
+      <option value="Drops">Drops</option>
+      <option value="Others">Others</option>
+    </select>
+
+    <input id="stock" type="number" placeholder="Stock Level" min="0">
+    <input id="price" type="number" placeholder="Price per Sheet (₹)" step="0.01">
+    <input id="expiry" type="date">
+    <textarea id="notes" placeholder="Notes (optional)"></textarea>
+
+    <button id="addBtn">+ Add Medicine</button>
+  </div>
+
+  <!-- CSV UPLOAD -->
+  <div class="box">
+    <h3>Bulk Upload via CSV</h3>
+
+    <div class="upload">
+      <input type="file" id="csvFile" accept=".csv">
+      <br><small>Accepted formats: YYYY-MM-DD or DD-MM-YYYY</small>
+    </div>
+
+    <button id="uploadBtn">Upload CSV</button>
+    <br><br>
+    <button onclick="location.href='/pharmacy/medicine-template'">
+      Download Sample Template
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* ========= DOM ========= */
+const medicineName = document.getElementById("medicineName");
+const drugName = document.getElementById("drugName");
+const category = document.getElementById("category");
+const stock = document.getElementById("stock");
+const price = document.getElementById("price");
+const expiry = document.getElementById("expiry");
+const notes = document.getElementById("notes");
+const csvFile = document.getElementById("csvFile");
+const addBtn = document.getElementById("addBtn");
+const uploadBtn = document.getElementById("uploadBtn");
+
+/* ========= ADD MEDICINE ========= */
+addBtn.onclick = async ()=>{
+  if(!medicineName.value.trim()){
+    alert("Medicine name is required");
+    return;
+  }
+
+  addBtn.disabled = true;
+  addBtn.innerText = "Adding...";
+
+  try{
+    const res = await fetch("/pharmacy/add-medicine",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        medicine_name: medicineName.value.trim(),
+        drug_name: drugName.value.trim(),
+        category: category.value,
+        stock: Number(stock.value) || 0,
+        price: Number(price.value) || 0,
+        expiry: expiry.value,
+        notes: notes.value.trim()
+      })
+    });
+
+    const d = await res.json();
+    alert(d.message || "Done");
+
+    if(d.success) location.href="/pharmacy-dashboard.html";
+
+  }catch(e){
+    alert("Server error");
+  }finally{
+    addBtn.disabled = false;
+    addBtn.innerText = "+ Add Medicine";
+  }
+};
+
+/* ========= UPLOAD CSV ========= */
+uploadBtn.onclick = async ()=>{
+  if(!csvFile.files.length){
+    alert("Please select a CSV file");
+    return;
+  }
+
+  uploadBtn.disabled = true;
+  uploadBtn.innerText = "Uploading...";
+
+  const f = new FormData();
+  f.append("csv", csvFile.files[0]);
+
+  try{
+    const res = await fetch("/pharmacy/upload-medicines",{
+      method:"POST",
+      body:f
+    });
+
+    const d = await res.json();
+    alert(d.message || "Upload completed");
+
+    if(d.success) location.href="/pharmacy-dashboard.html";
+
+  }catch(e){
+    alert("Upload failed");
+  }finally{
+    uploadBtn.disabled = false;
+    uploadBtn.innerText = "Upload CSV";
+  }
+};
+</script>
+
+</body>
+</html>

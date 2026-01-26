@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VEL HEALTH | Login & Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#16a085;
+  --dark:#0f766e;
+  --light:#f3f4f6;
+}
+*{box-sizing:border-box;font-family:Segoe UI, sans-serif}
+body{margin:0;display:flex;min-height:100vh}
+
+/* LEFT PANEL */
+.left{
+  flex:1;
+  background:linear-gradient(135deg,#16a085,#0f766e);
+  color:#fff;
+  padding:60px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.brand{font-size:22px;font-weight:700}
+.left h1{margin-top:100px;font-size:38px}
+.left p{opacity:.9}
+
+/* RIGHT PANEL */
+.right{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+}
+.card{
+  width:420px;
+}
+.tabs{
+  background:#f1f5f4;
+  display:flex;
+  padding:6px;
+  border-radius:12px;
+}
+.tabs button{
+  flex:1;
+  border:none;
+  padding:10px;
+  background:none;
+  font-weight:600;
+  cursor:pointer;
+  border-radius:10px;
+}
+.tabs .active{background:#fff}
+
+.role-tabs{
+  display:flex;
+  margin:20px 0;
+  gap:10px;
+}
+.role-tabs button{
+  flex:1;
+  padding:10px;
+  border-radius:12px;
+  border:2px solid #e5e7eb;
+  background:#fff;
+  cursor:pointer;
+}
+.role-tabs .active{
+  background:var(--primary);
+  color:#fff;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0 15px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+}
+button.submit{
+  width:100%;
+  padding:14px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  cursor:pointer;
+}
+.hidden{display:none}
+.small{
+  background:#ecfdf5;
+  padding:10px;
+  border-radius:10px;
+  margin-bottom:15px;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LEFT -->
+<div class="left">
+  <div class="brand">💚 VEL HEALTH<br><small>AI-Powered Pharmacy Portal</small></div>
+  <div id="leftText">
+    <h1>Welcome Back!</h1>
+    <p>Access your dashboard and manage your pharmacy or view your purchases.</p>
+  </div>
+  <small>© 2024 VEL HEALTH AI</small>
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+  <div class="card">
+
+    <!-- LOGIN / SIGNUP -->
+    <div class="tabs">
+      <button id="loginTab" class="active" onclick="switchTab('login')">Login</button>
+      <button id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- ROLE -->
+    <div id="roleTabs" class="role-tabs hidden">
+      <button id="pharmacyBtn" class="active" onclick="setRole('pharmacy')">Pharmacy</button>
+      <button id="customerBtn" onclick="setRole('customer')">Customer</button>
+    </div>
+
+    <!-- LOGIN -->
+    <form id="loginForm">
+      <label>Email / Phone / ABHA</label>
+      <input id="loginUser" required>
+
+      <label>Password</label>
+      <input id="loginPass" type="password" required>
+
+      <button class="submit">Login</button>
+    </form>
+
+    <!-- SIGNUP -->
+    <form id="signupForm" class="hidden">
+      <div id="pharmacyFields">
+        <input placeholder="Pharmacy Name" id="pharmacy_name">
+        <input placeholder="Owner Name" id="owner_name">
+        <input placeholder="GST Number" id="gst">
+      </div>
+
+      <input placeholder="Full Name" id="name">
+      <input placeholder="Mobile Number" id="mobile">
+      <input placeholder="Email (optional)" id="email">
+      <input placeholder="ABHA Number (optional)" id="abha">
+      <input placeholder="Address" id="address">
+      <input type="password" placeholder="Create Password" id="password">
+
+      <div class="small" id="bonus">🎁 Get <b>50 Credits</b> as Welcome Bonus!</div>
+
+      <button class="submit">Create Account</button>
+    </form>
+
+  </div>
+</div>
+
+<script>
+/* ========= ELEMENT REFERENCES ========= */
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+
+const loginUser = document.getElementById("loginUser");
+const loginPass = document.getElementById("loginPass");
+
+const pharmacy_name = document.getElementById("pharmacy_name");
+const owner_name   = document.getElementById("owner_name");
+const gst           = document.getElementById("gst");
+
+const nameInput    = document.getElementById("name");
+const mobile       = document.getElementById("mobile");
+const email        = document.getElementById("email");
+const abha         = document.getElementById("abha");
+const address      = document.getElementById("address");
+const password     = document.getElementById("password");
+
+const pharmacyFields = document.getElementById("pharmacyFields");
+const bonus = document.getElementById("bonus");
+const roleTabs = document.getElementById("roleTabs");
+
+const loginTab = document.getElementById("loginTab");
+const signupTab = document.getElementById("signupTab");
+const pharmacyBtn = document.getElementById("pharmacyBtn");
+const customerBtn = document.getElementById("customerBtn");
+const leftText = document.getElementById("leftText");
+
+/* ========= STATE ========= */
+let mode = "login";
+let role = "pharmacy";
+
+/* ========= TAB SWITCH ========= */
+function switchTab(t){
+  mode = t;
+
+  loginForm.classList.toggle("hidden", t !== "login");
+  signupForm.classList.toggle("hidden", t !== "signup");
+  roleTabs.classList.toggle("hidden", t !== "signup");
+
+  loginTab.classList.toggle("active", t === "login");
+  signupTab.classList.toggle("active", t === "signup");
+
+  if(t === "login"){
+    leftText.innerHTML = `
+      <h1>Welcome Back!</h1>
+      <p>Access your dashboard.</p>
+    `;
+  } else {
+    updateLeftText();
+  }
+}
+
+/* ========= ROLE SWITCH ========= */
+function setRole(r){
+  role = r;
+
+  pharmacyBtn.classList.toggle("active", r === "pharmacy");
+  customerBtn.classList.toggle("active", r === "customer");
+
+  pharmacyFields.style.display = r === "pharmacy" ? "block" : "none";
+  bonus.style.display = r === "customer" ? "block" : "none";
+
+  if(mode === "signup") updateLeftText();
+}
+
+/* ========= LEFT TEXT ========= */
+function updateLeftText(){
+  leftText.innerHTML =
+    role === "pharmacy"
+      ? `<h1>Register Your Pharmacy</h1><p>Get started with inventory, billing and rewards.</p>`
+      : `<h1>Join as Customer</h1><p>Get 50 credits and start saving on every purchase.</p>`;
+}
+
+/* ========= LOGIN ========= */
+loginForm.onsubmit = async (e)=>{
+  e.preventDefault();
+
+  try{
+    const res = await fetch("/login",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        user: loginUser.value.trim(),
+        password: loginPass.value
+      })
+    });
+
+    const result = await res.json();
+
+    if(!result.success){
+      alert(result.message || "Login failed");
+      return;
+    }
+
+    location.href =
+      result.role === "customer"
+        ? "/customer-dashboard.html"
+        : "/pharmacy-dashboard.html";
+
+  }catch(err){
+    alert("Server not reachable");
+  }
+};
+
+/* ========= SIGNUP ========= */
+signupForm.onsubmit = async (e)=>{
+  e.preventDefault();
+
+  const payload = {
+    role,
+    pharmacy_name: role === "pharmacy" ? pharmacy_name.value.trim() : null,
+    owner_name:   role === "pharmacy" ? owner_name.value.trim() : null,
+    gst:          role === "pharmacy" ? gst.value.trim() : null,
+    name: nameInput.value.trim(),
+    mobile: mobile.value.trim(),
+    email: email.value.trim(),
+    abha: abha.value.trim(),
+    address: address.value.trim(),
+    password: password.value
+  };
+
+  try{
+    const res = await fetch("/register",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await res.json();
+    alert(result.message || "Registration completed");
+
+    if(result.message?.toLowerCase().includes("success")){
+      switchTab("login");
+    }
+
+  }catch(err){
+    alert("Server not reachable");
+  }
+};
+</script>
+
+</body>
+</html>

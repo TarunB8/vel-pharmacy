@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Invoice</title>
+<meta name="viewport" content="width=device-width">
+
+<style>
+body{font-family:Segoe UI;margin:40px}
+.invoice{
+  max-width:700px;
+  margin:auto;
+  border:1px solid #ddd;
+  padding:30px;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+}
+h2{margin:0}
+.table{width:100%;border-collapse:collapse;margin-top:20px}
+.table th,.table td{
+  border-bottom:1px solid #eee;
+  padding:10px;
+}
+.total{text-align:right;font-size:18px}
+.print{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+}
+@media print{
+  .print{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="invoice" id="inv">
+  <div class="header">
+    <div>
+      <h2 id="pharmacy"></h2>
+      <small>Invoice</small>
+    </div>
+    <div>
+      <small>Date:</small><br>
+      <span id="date"></span>
+    </div>
+  </div>
+
+  <p>
+    <b>Customer:</b> <span id="customer"></span><br>
+    <b>Payment:</b> <span id="method"></span>
+  </p>
+
+  <table class="table">
+    <tr>
+      <th>Total Items</th>
+      <th>Amount</th>
+    </tr>
+    <tr>
+      <td id="items"></td>
+      <td>₹<span id="amount"></span></td>
+    </tr>
+  </table>
+
+  <p class="total">
+    <b>Total Payable: ₹<span id="payable"></span></b>
+  </p>
+
+  <div class="print">
+    <button onclick="window.print()">🖨 Print</button>
+    <button onclick="location.href='/pharmacy-dashboard.html'">Done</button>
+  </div>
+</div>
+
+<script>
+const id = new URLSearchParams(location.search).get("id");
+
+fetch("/invoice/"+id)
+.then(r=>r.json())
+.then(d=>{
+  if(!d.success) return;
+
+  pharmacy.innerText = d.invoice.pharmacy_name;
+  customer.innerText = d.invoice.customer_name;
+  items.innerText = d.invoice.items;
+  amount.innerText = d.invoice.amount;
+  payable.innerText = d.invoice.amount;
+  method.innerText = d.invoice.payment_method;
+  date.innerText = new Date(d.invoice.created_at).toLocaleString();
+});
+</script>
+
+</body>
+</html>

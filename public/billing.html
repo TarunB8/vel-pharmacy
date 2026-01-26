@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VEL HEALTH | Billing</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Segoe UI;background:#f7faf9}
+.header{padding:18px 8%;background:#fff}
+.container{margin:30px 8%}
+.box{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05);
+  margin-bottom:25px;
+}
+.row{display:flex;gap:10px}
+input,select{
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  width:100%;
+}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #eee}
+.total{text-align:right;font-size:20px}
+button{
+  padding:14px;
+  background:#16a085;
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <a href="/pharmacy-dashboard.html">←</a> <b>Billing</b>
+</div>
+
+<div class="container">
+
+  <!-- CUSTOMER -->
+  <div class="box">
+    <h3>Customer</h3>
+    <input id="search" placeholder="Mobile / Email / ABHA">
+    <p id="custInfo"></p>
+  </div>
+
+  <!-- MEDICINES -->
+  <div class="box">
+    <h3>Add Medicines</h3>
+    <select id="medSelect"></select>
+    <input id="qty" type="number" placeholder="Qty">
+    <button onclick="addItem()">Add</button>
+  </div>
+
+  <!-- BILL -->
+  <div class="box">
+    <h3>Bill</h3>
+    <table>
+      <thead>
+        <tr><th>Medicine</th><th>Qty</th><th>Price</th></tr>
+      </thead>
+      <tbody id="items"></tbody>
+    </table>
+
+    <p>Credits Available: ₹<span id="credits">0</span></p>
+    <input id="useCredits" type="number" placeholder="Use credits">
+    <p class="total">Total: ₹<span id="total">0</span></p>
+
+    <button onclick="checkout()">Checkout</button>
+  </div>
+
+</div>
+
+<script>
+let customer=null, medicines=[], cart=[];
+
+fetch("/billing/medicines")
+.then(r=>r.json())
+.then(d=>{
+  medicines=d;
+  medSelect.innerHTML=d.map(m=>
+    `<option value="${m.id}" data-price="${m.price}">
+      ${m.medicine_name} (₹${m.price})
+    </option>`
+  ).join("");
+});
+
+search.onchange=()=>{
+  fetch("/billing/customer/"+search.value)
+  .then(r=>r.json())
+  .then(d=>{
+    if(!d.success){ alert("Customer not found"); return; }
+    customer=d.customer;
+    custInfo.innerText=`${customer.name} | Credits: ₹${customer.credits}`;
+    credits.innerText=customer.credits;
+  });
+};
+
+function addItem(){
+  const id=medSelect.value;
+  const qty=Number(document.getElementById("qty").value);
+  const med=medicines.find(m=>m.id==id);
+  cart.push({id,qty,price:med.price,name:med.medicine_name});
+  render();
+}
+
+function render(){
+  let sum=0;
+  items.innerHTML=cart.map(c=>{
+    sum+=c.qty*c.price;
+    return `<tr><td>${c.name}</td><td>${c.qty}</td><td>₹${c.qty*c.price}</td></tr>`;
+  }).join("");
+  total.innerText=sum;
+}
+
+function checkout(){
+  if(!customer || cart.length===0){
+    alert("Add customer and medicines");
+    return;
+  }
+
+  const creditsUsed = Math.min(Number(useCredits.value)||0, customer.credits);
+
+  const method = prompt("Select payment method: CASH or UPI","CASH");
+  if(!method || !["CASH","UPI"].includes(method.toUpperCase())) return;
+
+  fetch("/billing/checkout",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      customerId:customer.id,
+      items:cart,
+      creditsUsed,
+      total:Number(total.innerText),
+      paymentMethod:method.toUpperCase()
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.success){
+      location.href = "/invoice.html?id=" + d.invoiceId;
+    }
+  });
+}
+</script>
+
+</body>
+</html>
