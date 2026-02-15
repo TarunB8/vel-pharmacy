@@ -21,18 +21,24 @@ app.use(session({
   saveUninitialized: true
 }));
 
-/* ===================== DATABASE ===================== */
+/* ===================== LOAD ENV ===================== */
+require("dotenv").config();
+
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "tarun123",
-  database: "vel_health"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
 db.connect(err => {
-  if (err) throw err;
+  if (err) {
+    console.error("MySQL connection error:", err);
+    process.exit(1);
+  }
   console.log("MySQL connected");
 });
+
 
 /* ===================== TABLES ===================== */
 db.query(`
