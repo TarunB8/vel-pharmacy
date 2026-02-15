@@ -24,21 +24,26 @@ app.use(session({
 /* ===================== LOAD ENV ===================== */
 require("dotenv").config();
 
-const db = mysql.createConnection({
+/* ===================== DATABASE POOL ===================== */
+const db = mysql.createPool({
+  connectionLimit: 10,          // max simultaneous connections
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 });
 
-db.connect(err => {
+/* ===================== TEST CONNECTION ===================== */
+db.getConnection((err, connection) => {
   if (err) {
-    console.error("MySQL connection error:", err);
-    process.exit(1);
+    console.error("MySQL pool connection error:", err);
+    return;
   }
-  console.log("MySQL connected");
+  console.log("MySQL pool connected");
+  connection.release(); // important → return connection to pool
 });
 
+module.exports = db;
 
 /* ===================== TABLES ===================== */
 db.query(`
