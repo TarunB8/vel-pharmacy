@@ -6,6 +6,8 @@ const multer = require("multer");
 const csv = require("csv-parser");
 const fs = require("fs");
 
+require("dotenv").config();
+
 const app = express();
 
 /* ===================== FILE UPLOAD ===================== */
@@ -15,22 +17,21 @@ const upload = multer({ dest: "uploads/" });
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use(session({
-  secret: "velhealthsecret",
-  resave: false,
-  saveUninitialized: true
-}));
-
-/* ===================== LOAD ENV ===================== */
-require("dotenv").config();
+app.use(
+  session({
+    secret: "velhealthsecret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 /* ===================== DATABASE POOL ===================== */
 const db = mysql.createPool({
-  connectionLimit: 10,          // max simultaneous connections
+  connectionLimit: 10,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
 });
 
 /* ===================== TEST CONNECTION ===================== */
@@ -40,33 +41,8 @@ db.getConnection((err, connection) => {
     return;
   }
   console.log("MySQL pool connected");
-  connection.release(); // important → return connection to pool
+  connection.release();
 });
-
-module.exports = db;
-
-/* ===================== TABLES ===================== */
-db.query(`
-CREATE TABLE IF NOT EXISTS users(
- id INT AUTO_INCREMENT PRIMARY KEY,
- role ENUM('pharmacy','customer'),
- name VARCHAR(100),
- mobile VARCHAR(15),
- email VARCHAR(100),
- abha VARCHAR(30),
- address TEXT,
- password VARCHAR(255),
- credits INT DEFAULT 0
-)`);
-
-db.query(`
-CREATE TABLE IF NOT EXISTS pharmacies(
- id INT AUTO_INCREMENT PRIMARY KEY,
- user_id INT,
- pharmacy_name VARCHAR(100),
- owner_name VARCHAR(100),
- gst VARCHAR(30)
-)`);
 
 /* ===================== DATE NORMALIZER ===================== */
 function normalizeDate(input) {
@@ -74,12 +50,8 @@ function normalizeDate(input) {
 
   input = input.toString().trim();
 
-  // YYYY-MM-DD
-  if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
-    return input;
-  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(input)) return input;
 
-  // DD-MM-YYYY or DD/MM/YYYY
   if (/^\d{2}[-/]\d{2}[-/]\d{4}$/.test(input)) {
     const [dd, mm, yyyy] = input.split(/[-/]/);
     return `${yyyy}-${mm}-${dd}`;
@@ -104,7 +76,7 @@ app.post("/register", async (req, res) => {
         req.body.abha,
         req.body.address,
         hash,
-        req.body.role === "customer" ? 50 : 0
+        req.body.role === "customer" ? 50 : 0,
       ],
       (err, result) => {
         if (err) return res.json({ message: "Error" });
@@ -117,7 +89,7 @@ app.post("/register", async (req, res) => {
               result.insertId,
               req.body.pharmacy_name,
               req.body.owner_name,
-              req.body.gst
+              req.body.gst,
             ]
           );
         }
@@ -146,7 +118,7 @@ app.post("/login", (req, res) => {
       req.session.user = {
         id: rows[0].id,
         role: rows[0].role,
-        name: rows[0].name
+        name: rows[0].name,
       };
 
       res.json({ success: true, role: rows[0].role });
@@ -161,20 +133,32 @@ app.get("/customer/dashboard", (req, res) => {
   const uid = req.session.user.id;
 
   db.query(`SELECT credits FROM users WHERE id=?`, [uid], (e, u) => {
-    db.query(`SELECT IFNULL(SUM(amount),0) totalSpent FROM purchases WHERE user_id=?`, [uid], (e2, s) => {
-      db.query(`SELECT IFNULL(SUM(credit_change),0) used FROM credit_history WHERE user_id=? AND credit_change<0`, [uid], (e3, c) => {
-        db.query(`SELECT * FROM purchases WHERE user_id=? ORDER BY created_at DESC LIMIT 5`, [uid], (e4, p) => {
-          res.json({
-            name: req.session.user.name,
-            credits: u[0].credits,
-            totalSpent: s[0].totalSpent,
-            creditsUsed: Math.abs(c[0].used),
-            saved: 100,
-            purchases: p
-          });
-        });
-      });
-    });
+    db.query(
+      `SELECT IFNULL(SUM(amount),0) totalSpent FROM purchases WHERE user_id=?`,
+      [uid],
+      (e2, s) => {
+        db.query(
+          `SELECT IFNULL(SUM(credit_change),0) used FROM credit_history WHERE user_id=? AND credit_change<0`,
+          [uid],
+          (e3, c) => {
+            db.query(
+              `SELECT * FROM purchases WHERE user_id=? ORDER BY created_at DESC LIMIT 5`,
+              [uid],
+              (e4, p) => {
+                res.json({
+                  name: req.session.user.name,
+                  credits: u[0].credits,
+                  totalSpent: s[0].totalSpent,
+                  creditsUsed: Math.abs(c[0].used),
+                  saved: 100,
+                  purchases: p,
+                });
+              }
+            );
+          }
+        );
+      }
+    );
   });
 });
 
@@ -202,7 +186,7 @@ app.get("/customer/credits-history", (req, res) => {
               balance: b[0].credits,
               earned: s[0].earned || 0,
               used: Math.abs(s[0].used || 0),
-              history: h
+              history: h,
             });
           }
         );
@@ -241,7 +225,7 @@ app.get("/pharmacy/dashboard", (req, res) => {
                 success: true,
                 pharmacy: p[0],
                 stats: s[0],
-                medicines: m
+                medicines: m,
               });
             }
           );
@@ -276,7 +260,7 @@ app.post("/pharmacy/add-medicine", (req, res) => {
           Number(req.body.stock) || 0,
           Number(req.body.price) || 0,
           expiry,
-          req.body.notes
+          req.body.notes,
         ],
         () => res.json({ success: true, message: "Medicine added successfully" })
       );
@@ -288,7 +272,7 @@ app.post("/pharmacy/add-medicine", (req, res) => {
 app.get("/pharmacy/medicine-template", (req, res) => {
   res.setHeader("Content-Disposition", "attachment; filename=medicine_template.csv");
   res.send(
-`medicine_name,drug_name,category,stock_level,price_per_sheet,expiry_date,notes
+    `medicine_name,drug_name,category,stock_level,price_per_sheet,expiry_date,notes
 Paracetamol 500mg,Paracetamol,Tablets,100,25.5,2025-12-31,Keep refrigerated`
   );
 });
@@ -308,9 +292,9 @@ app.post("/pharmacy/upload-medicines", upload.single("csv"), (req, res) => {
 
       fs.createReadStream(req.file.path)
         .pipe(csv())
-        .on("data", r => rows.push(r))
+        .on("data", (r) => rows.push(r))
         .on("end", () => {
-          rows.forEach(r => {
+          rows.forEach((r) => {
             const expiry = normalizeDate(r.expiry_date);
             if (!expiry) return;
 
@@ -326,7 +310,7 @@ app.post("/pharmacy/upload-medicines", upload.single("csv"), (req, res) => {
                 Number(r.stock_level) || 0,
                 Number(r.price_per_sheet) || 0,
                 expiry,
-                r.notes || ""
+                r.notes || "",
               ]
             );
           });
@@ -338,7 +322,7 @@ app.post("/pharmacy/upload-medicines", upload.single("csv"), (req, res) => {
   );
 });
 
-
+/* ===================== BILLING ===================== */
 app.get("/billing/customer/:q", (req, res) => {
   if (!req.session.user || req.session.user.role !== "pharmacy")
     return res.status(401).json({});
@@ -389,20 +373,12 @@ app.post("/billing/checkout", (req, res) => {
 
       const pharmacyId = p[0].id;
 
-      /* 1️⃣ Reduce stock */
-      items.forEach(i => {
-        db.query(
-          "UPDATE medicines SET stock = stock - ? WHERE id=?",
-          [i.qty, i.id]
-        );
+      items.forEach((i) => {
+        db.query("UPDATE medicines SET stock = stock - ? WHERE id=?", [i.qty, i.id]);
       });
 
-      /* 2️⃣ Deduct credits */
       if (creditsUsed > 0) {
-        db.query(
-          "UPDATE users SET credits = credits - ? WHERE id=?",
-          [creditsUsed, customerId]
-        );
+        db.query("UPDATE users SET credits = credits - ? WHERE id=?", [creditsUsed, customerId]);
 
         db.query(
           `INSERT INTO credit_history (user_id, credit_change, description)
@@ -411,23 +387,20 @@ app.post("/billing/checkout", (req, res) => {
         );
       }
 
-      /* 3️⃣ Insert purchase (SAFE) */
       db.query(
         `INSERT INTO purchases 
          (user_id, pharmacy_id, items, amount, payment_method)
          VALUES (?,?,?,?,?)`,
         [customerId, pharmacyId, items.length, total, paymentMethod],
         (err2, result) => {
-
           if (err2) {
             console.error("Purchase insert error:", err2);
             return res.json({ success: false });
           }
 
-          // ✅ GUARANTEED SAFE NOW
           res.json({
             success: true,
-            invoiceId: result.insertId
+            invoiceId: result.insertId,
           });
         }
       );
@@ -435,7 +408,7 @@ app.post("/billing/checkout", (req, res) => {
   );
 });
 
-
+/* ===================== INVOICE ===================== */
 app.get("/invoice/:id", (req, res) => {
   if (!req.session.user) return res.status(401).json({});
 
